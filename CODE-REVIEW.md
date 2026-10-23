@@ -122,6 +122,5 @@ authorization:
 - ChatGPT requires a remote HTTPS MCP endpoint or supported tunnel; the local
   `127.0.0.1` endpoint is not a direct ChatGPT connection target.
 - Public source repository: `https://github.com/amjad2161/open-data-bridge`.
-  Main was independently checked at commit
-  `eeee8b20b8f31872fb964085c5823ae7b77c0b02`.
+  Public `main` was independently checked through the GitHub API.
 
