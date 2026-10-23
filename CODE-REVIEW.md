@@ -68,8 +68,9 @@ persistence changes, tests and setup documentation.
 - Private ChatGPT integration: verified through the official tunnel-client
   runtime and a real `get_connectors` call from ChatGPT; 7 dispatcher requests
   completed with 0 failures.
-- Local Codex integration: the 0.5.0 package installation was previously
-  verified; the running loopback MCP endpoint now serves the 0.5.1 source.
+- Local Codex integration: `codex plugin list` now verifies the 0.5.1 package
+  installed and enabled; the running loopback MCP endpoint serves the same
+  0.5.1 source.
 - Meta setup: an existing development app is available and its required test
   permissions are ready, but read-only URI validation showed that the loopback
   callback is not registered. Meta also requires password re-authentication
