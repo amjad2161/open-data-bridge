@@ -52,7 +52,7 @@ behavior or Windsor.ai parity.
 | Local Codex plugin installation | the 0.5.0 installation was previously verified and its MCP config targets `127.0.0.1:8788/mcp`; the running source is now 0.5.1 |
 | Local 0.5.0 plugin artifact | `.artifacts/open-data-bridge-0.5.0.zip`; SHA-256 `62CBA2E9D18A65A960B38E5F3544051D9D0369D264CF9550166A8398274D39CE` |
 | Local 0.5.1 plugin artifact | `.artifacts/open-data-bridge-0.5.1.zip`; SHA-256 `7982E45753AD59EEC07A8C542AEF1084BD5D976F1AF5629D016440FD0DA16739`; archive contains only `.codex-plugin/plugin.json` and `.app.json` |
-| Public GitHub source | `https://github.com/amjad2161/open-data-bridge`; main verified at commit `c66f74364166157ba732bdaf0248b8f983139cea`, including `configure_meta.py` and the 0.5.1 server |
+| Public GitHub source | `https://github.com/amjad2161/open-data-bridge`; main verified at commit `a146fdf4948110b6056c8d6c72d6742193eb278a`, including `configure_meta.py` and the 0.5.1 server |
 | Meta redirect configuration | read-only Meta validation returned `invalid redirect URI` for `http://127.0.0.1:8788/oauth/meta/callback`; it has not been saved |
 
 ## Commands and results
