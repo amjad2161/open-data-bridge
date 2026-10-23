@@ -49,7 +49,7 @@ behavior or Windsor.ai parity.
 | ChatGPT custom app | `Open Data Bridge` installed and connected in the private workspace |
 | ChatGPT MCP call | `get_connectors` executed through the private tunnel and returned `demo_ads`; 0 write actions |
 | Remote ChatGPT fresh-chat verification | read-only `get_publish_capabilities` succeeded; the new chat exposed 31 tools, reported Meta disconnected, no vendor credits and approval-gated writes |
-| Local Codex plugin installation | the 0.5.0 installation was previously verified and its MCP config targets `127.0.0.1:8788/mcp`; the running source is now 0.5.1 |
+| Local Codex plugin installation | `codex plugin list` verified `open-data-bridge@open-data-bridge-local` version `0.5.1` as installed and enabled; its MCP config targets `127.0.0.1:8788/mcp` |
 | Local 0.5.0 plugin artifact | `.artifacts/open-data-bridge-0.5.0.zip`; SHA-256 `62CBA2E9D18A65A960B38E5F3544051D9D0369D264CF9550166A8398274D39CE` |
 | Local 0.5.1 plugin artifact | `.artifacts/open-data-bridge-0.5.1.zip`; SHA-256 `7982E45753AD59EEC07A8C542AEF1084BD5D976F1AF5629D016440FD0DA16739`; archive contains only `.codex-plugin/plugin.json` and `.app.json` |
 | Public GitHub source | `https://github.com/amjad2161/open-data-bridge`; public `main` was checked through the GitHub API and includes `configure_meta.py` and the 0.5.1 server |
