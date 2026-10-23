@@ -149,7 +149,7 @@ Verification for this expansion:
 | Private app metadata | private description updated to the guarded publishing surface; local 0.5.1 source is running |
 | Remote ChatGPT app schema | fresh chat exposed 31 tools and successfully called read-only `get_publish_capabilities`; older open chats may retain 5 tools |
 | Local Codex plugin | last independently verified installation was 0.5.0; the loopback MCP endpoint now serves 0.5.1 |
-| Public source repository | `https://github.com/amjad2161/open-data-bridge`; main verified at commit `a146fdf4948110b6056c8d6c72d6742193eb278a` |
+| Public source repository | `https://github.com/amjad2161/open-data-bridge`; main verified at commit `eeee8b20b8f31872fb964085c5823ae7b77c0b02` |
 
 ## Deliberately not implemented yet
 
