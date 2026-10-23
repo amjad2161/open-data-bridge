@@ -110,8 +110,8 @@ Verification for this expansion:
 - The direct app URL is private to the connected ChatGPT workspace; it is not
   a public marketplace distribution link.
 - A local marketplace entry `open-data-bridge-local` was registered with Codex,
-  and `open-data-bridge@open-data-bridge-local` version `0.5.0` was installed
-  and enabled in the local Codex configuration.
+  and `open-data-bridge@open-data-bridge-local` version `0.5.1` was installed
+  and enabled through the supported Codex plugin installer.
 
 ## Implemented and verified
 
@@ -148,7 +148,7 @@ Verification for this expansion:
 | Fail-closed write boundary | destination tasks, custom fields, contact and `execute_action` return blocked/no-side-effect results |
 | Private app metadata | private description updated to the guarded publishing surface; local 0.5.1 source is running |
 | Remote ChatGPT app schema | fresh chat exposed 31 tools and successfully called read-only `get_publish_capabilities`; older open chats may retain 5 tools |
-| Local Codex plugin | last independently verified installation was 0.5.0; the loopback MCP endpoint now serves 0.5.1 |
+| Local Codex plugin | `codex plugin list` independently verifies version 0.5.1 installed and enabled; the loopback MCP endpoint serves 0.5.1 |
 | Public source repository | `https://github.com/amjad2161/open-data-bridge`; public `main` contains the current 0.5.1 source and was checked through the GitHub API |
 
 ## Deliberately not implemented yet
