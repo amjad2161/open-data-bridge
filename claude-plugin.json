@@ -1,0 +1,8 @@
+{
+  "name": "open-data-bridge",
+  "description": "Local-first Windsor-style marketing data bridge with 367-source catalog, nested queries, exports and approval-gated Facebook/Instagram publishing",
+  "mcp_server": "http://127.0.0.1:8788/mcp",
+  "writes_enabled": false,
+  "auth": "local-only"
+}
+

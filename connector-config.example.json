@@ -1,0 +1,31 @@
+{
+  "connectors": {
+    "googleanalytics4": {
+      "enabled": false,
+      "auth": "oauth2",
+      "provider": "Google",
+      "scopes": ["https://www.googleapis.com/auth/analytics.readonly"]
+    },
+    "google_ads": {
+      "enabled": false,
+      "auth": "oauth2",
+      "provider": "Google Ads",
+      "scopes": ["https://www.googleapis.com/auth/adwords"]
+    },
+    "facebook": {
+      "enabled": false,
+      "auth": "oauth2",
+      "provider": "Meta",
+      "scopes": ["ads_read"]
+    },
+    "shopify": {
+      "enabled": false,
+      "auth": "oauth2_or_custom_app",
+      "provider": "Shopify",
+      "scopes": ["read_orders", "read_products"]
+    }
+  },
+  "writes_enabled": false,
+  "credential_storage": "not_configured"
+}
+

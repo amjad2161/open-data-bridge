@@ -1,0 +1,21 @@
+{
+  "name": "open-data-bridge-local",
+  "interface": {
+    "displayName": "Open Data Bridge Local"
+  },
+  "plugins": [
+    {
+      "name": "open-data-bridge",
+      "source": {
+        "source": "local",
+        "path": "./.agents/plugins/open-data-bridge"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
+
