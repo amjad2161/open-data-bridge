@@ -57,8 +57,9 @@ conversation can retain. A fresh ChatGPT conversation was verified against the
 updated app and exposed all 31 tools; an older conversation may continue to
 show its original five-tool snapshot until it is refreshed or reopened.
 
-The last independently verified local Codex package was 0.5.0; the running
-loopback MCP service now serves the 0.5.1 source. A fresh ChatGPT session must
+The local Codex package is independently verified at 0.5.1 through `codex
+plugin list`; it is installed and enabled from this local marketplace and its
+MCP config targets the running loopback service. A fresh ChatGPT session must
 be used when a client has cached an older tool list.
 
 ## Hard limits
