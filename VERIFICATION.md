@@ -2,15 +2,15 @@
 
 Verification run: current workspace state.
 
-## Expansion verification (2026-10-23) — 0.5.0
+## Expansion verification (2026-10-23) — 0.5.1
 
 | Check | Result |
 |---|---|
-| Unit/integration suite | 43 tests passed |
+| Unit/integration suite | 44 tests passed |
 | Python compilation | passed |
 | Meta adapter contract | discovery, vault redaction, URL validation, Facebook Page text scheduling, Instagram image/Reels flow and disconnected no-network path passed |
 | Approval gate | exact-plan digest, explicit phrase, one-time approval grant and unknown-outcome fail-closed path covered |
-| Live local publish surface | `/health` = `0.5.0`; capabilities report Meta disconnected, approval required, no vendor credits and no secrets in responses |
+| Live local publish surface | `/health` = `0.5.1`; capabilities report Meta disconnected, approval required, no vendor credits, no secrets in responses and safe missing-configuration diagnostics |
 | Live local publish smoke | preview → explicit approval → dry-run returned HTTP 200, `dry_run`, and `provider_request_made=false` |
 | Live local MCP inventory | `tools/list` returned 31 tools, including `get_publish_capabilities`, `sync_meta_accounts`, `preview_publish`, `approve_publish` and `publish_media` |
 | Live account sync guard | `/api/meta/accounts/sync` returned `blocked / meta_oauth_not_connected`; no provider request was made |
@@ -49,18 +49,19 @@ behavior or Windsor.ai parity.
 | ChatGPT custom app | `Open Data Bridge` installed and connected in the private workspace |
 | ChatGPT MCP call | `get_connectors` executed through the private tunnel and returned `demo_ads`; 0 write actions |
 | Remote ChatGPT fresh-chat verification | read-only `get_publish_capabilities` succeeded; the new chat exposed 31 tools, reported Meta disconnected, no vendor credits and approval-gated writes |
-| Local Codex plugin installation | `open-data-bridge@open-data-bridge-local` version `0.5.0` installed and enabled; installed MCP config targets `127.0.0.1:8788/mcp` |
+| Local Codex plugin installation | the 0.5.0 installation was previously verified and its MCP config targets `127.0.0.1:8788/mcp`; the running source is now 0.5.1 |
 | Local 0.5.0 plugin artifact | `.artifacts/open-data-bridge-0.5.0.zip`; SHA-256 `62CBA2E9D18A65A960B38E5F3544051D9D0369D264CF9550166A8398274D39CE` |
-| Meta redirect configuration | `http://127.0.0.1:8788/oauth/meta/callback` saved in the existing Meta app |
+| Local 0.5.1 plugin artifact | `.artifacts/open-data-bridge-0.5.1.zip`; SHA-256 `7982E45753AD59EEC07A8C542AEF1084BD5D976F1AF5629D016440FD0DA16739`; archive contains only `.codex-plugin/plugin.json` and `.app.json` |
+| Meta redirect configuration | read-only Meta validation returned `invalid redirect URI` for `http://127.0.0.1:8788/oauth/meta/callback`; it has not been saved |
 
 ## Commands and results
 
 | Command | Result |
 |---|---|
-| `python -m unittest -v` | 43 tests passed |
+| `python -m unittest -v` | 44 tests passed |
 | `python -m compileall -q .` | passed |
 | `python -c "import app, connectors, meta_oauth, oauth, vault; print('imports: ok')"` | passed |
-| live `GET /health` on `127.0.0.1:8788` | verified after the 0.5.0 restart; local writes remain false |
+| live `GET /health` on `127.0.0.1:8788` | verified after the 0.5.1 restart; local writes remain false |
 | live connector discovery | synthetic `demo_ads` returned |
 | live field discovery | `date`, `campaign`, `spend`, `conversions` returned |
 | live date-filtered query | one matching synthetic row returned |
@@ -84,7 +85,7 @@ behavior or Windsor.ai parity.
 - The ChatGPT app is connected, but the live result is still the synthetic
   connector because no real provider account is configured in the bridge.
 - The private plugin metadata page previously reported version `0.4.0`; the
-  local source and Codex package are now `0.5.0`. An already-open ChatGPT
+  local source and running service are now `0.5.1`. An already-open ChatGPT
   conversation can retain an older five-tool snapshot, while a fresh ChatGPT
   conversation was verified against the updated app and exposed 31 tools. This
   is expected per-app-session snapshot behavior.

@@ -46,6 +46,19 @@ requirements, ad-account restrictions or Meta rate limits.
 
 ## Configure the bridge
 
+The recommended local path is the interactive helper. It asks for the App
+Secret with echo disabled and stores the complete Meta app configuration in
+the current Windows user's DPAPI vault. The secret is not sent to ChatGPT,
+written to the repository or printed to the terminal:
+
+```powershell
+python .\configure_meta.py
+```
+
+The service can also read the environment variables below. This is useful for
+ephemeral CI or a separately managed secret store; do not persist the App
+Secret in a `.env` file, URL, browser bookmark or chat message.
+
 Set these variables in the process environment. Do not commit them or put the
 app secret in a repository, URL, browser bookmark or chat message.
 
@@ -62,6 +75,11 @@ python .\app.py
 
 The API version is intentionally not hard-coded because Meta deprecates API
 versions. Set the version currently enabled for the app in Meta's console.
+
+When the DPAPI configuration is present, the local `/api/meta/connect-url`
+endpoint and the MCP `get_meta_connect_url` tool use it automatically. The
+safe `configuration` section of `get_publish_capabilities` reports only
+missing field names and whether a vault configuration exists.
 
 ## Obtain the connection link
 

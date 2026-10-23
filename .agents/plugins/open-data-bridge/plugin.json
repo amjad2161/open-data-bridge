@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "open-data-bridge",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Local-first Windsor-style marketing data bridge with 367-source discovery, nested queries, exports and approval-gated Meta publishing.",
   "author": {
     "name": "Amjad Mobarsham"

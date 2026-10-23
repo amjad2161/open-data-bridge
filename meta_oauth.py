@@ -1,9 +1,11 @@
 """Provider-specific Meta OAuth flow for the local bridge.
 
-This module is intentionally disabled until the operator supplies a Meta app,
-redirect URI, API version and explicit scopes through environment variables.
-It never stores an app secret in source control and never returns access tokens
-to HTTP or MCP callers.
+The non-secret configuration may be supplied through environment variables or
+through the Windows-user-bound DPAPI vault.  The app secret is accepted from
+the environment for CI/development compatibility, but the supported local
+setup path stores it only in the encrypted vault.  This module never stores an
+app secret in source control and never returns access tokens to HTTP or MCP
+callers.
 """
 
 from __future__ import annotations
@@ -37,19 +39,36 @@ class MetaOAuthConfig:
     use_pkce: bool = True
 
     @classmethod
-    def from_env(cls) -> "MetaOAuthConfig":
-        scopes = tuple(
-            item.strip()
-            for item in os.environ.get("META_OAUTH_SCOPES", "").split(",")
-            if item.strip()
-        )
+    def from_env(cls, stored: dict[str, Any] | None = None) -> "MetaOAuthConfig":
+        stored = stored if isinstance(stored, dict) else {}
+
+        def configured_value(environment_name: str, stored_name: str) -> str:
+            environment_value = os.environ.get(environment_name, "").strip()
+            if environment_value:
+                return environment_value
+            value = stored.get(stored_name, "")
+            return value.strip() if isinstance(value, str) else ""
+
+        scopes_value = os.environ.get("META_OAUTH_SCOPES", "").strip()
+        if not scopes_value:
+            scopes_value = stored.get("scopes", "")
+            if isinstance(scopes_value, list):
+                scopes_value = ",".join(item for item in scopes_value if isinstance(item, str))
+            if not isinstance(scopes_value, str):
+                scopes_value = ""
+        scopes = tuple(item.strip() for item in scopes_value.split(",") if item.strip())
+        use_pkce_value = os.environ.get("META_USE_PKCE", "").strip()
+        if use_pkce_value:
+            use_pkce = use_pkce_value.lower() not in {"0", "false", "no"}
+        else:
+            use_pkce = bool(stored.get("use_pkce", True))
         value = cls(
-            app_id=os.environ.get("META_APP_ID", "").strip(),
-            app_secret=os.environ.get("META_APP_SECRET", "").strip(),
-            api_version=os.environ.get("META_API_VERSION", "").strip(),
-            redirect_uri=os.environ.get("META_REDIRECT_URI", "").strip(),
+            app_id=configured_value("META_APP_ID", "app_id"),
+            app_secret=configured_value("META_APP_SECRET", "app_secret"),
+            api_version=configured_value("META_API_VERSION", "api_version"),
+            redirect_uri=configured_value("META_REDIRECT_URI", "redirect_uri"),
             scopes=scopes,
-            use_pkce=os.environ.get("META_USE_PKCE", "true").strip().lower() not in {"0", "false", "no"},
+            use_pkce=use_pkce,
         )
         return value
 
@@ -92,10 +111,35 @@ class MetaOAuthClient:
         vault: UserVault | None = None,
         opener: Callable[..., Any] | None = None,
     ) -> None:
-        self.config = config or MetaOAuthConfig.from_env()
-        self.state_store = state_store or OAuthStateStore()
         self.vault = vault or UserVault(os.environ.get("OPEN_DATA_BRIDGE_VAULT_PATH", "").strip() or default_vault_path())
+        self.config = config or MetaOAuthConfig.from_env(self._stored_app_config())
+        self.state_store = state_store or OAuthStateStore()
         self._opener = opener or urlopen
+
+    def _stored_app_config(self) -> dict[str, Any]:
+        """Read only the encrypted local app configuration, never its raw bytes."""
+        try:
+            raw = self.vault.get("meta.app_config")
+        except VaultError:
+            return {}
+        if not raw:
+            return {}
+        try:
+            value = json.loads(raw)
+        except json.JSONDecodeError:
+            return {}
+        return value if isinstance(value, dict) else {}
+
+    def configuration_status(self) -> dict[str, Any]:
+        """Return safe configuration diagnostics without values or secrets."""
+        stored = self._stored_app_config()
+        return {
+            "provider": "meta",
+            "configured": self.config.configured,
+            "missing": self.config.missing,
+            "vault_app_configured": bool(stored),
+            "secrets_in_response": False,
+        }
 
     def _require_configured(self) -> None:
         if not self.config.configured:

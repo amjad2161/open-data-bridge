@@ -15,7 +15,7 @@ This is an independent implementation. It does not copy Windsor.ai code, brandin
 - An example connector configuration with disabled real connectors and explicit scopes.
 - Windows-user-bound DPAPI vault primitives in `vault.py`; no credentials are created or connected automatically.
 - Provider-neutral OAuth state/PKCE primitives in `oauth.py`; no client IDs, secrets or token exchange are included.
-- Meta OAuth start/callback/status flow in `meta_oauth.py`; it is fail-closed until the operator supplies an app and explicit scopes.
+- Meta OAuth start/callback/status flow in `meta_oauth.py`; it is fail-closed until the operator supplies an app and explicit scopes. `configure_meta.py` stores the local app secret only in the Windows DPAPI vault.
 - Approval-gated Meta publishing adapter in `meta_publish.py`: Facebook Page text/link/photo posts and Instagram professional-account image/video/Reels posts from public HTTPS media URLs. Page/Instagram account discovery stores provider tokens only in the encrypted local vault.
 - OpenAI/ChatGPT deployment and MCP setup guidance in `OPENAI-SETUP.md`.
 - Facebook/Instagram/Meta setup and authorization boundaries in `META-SETUP.md`.
@@ -24,7 +24,7 @@ This is an independent implementation. It does not copy Windsor.ai code, brandin
 - Claude Code and Cursor configuration templates targeting the local server.
 - No real-account connection has been attempted.
 
-## Expanded Windsor-style contract (version 0.5.0)
+## Expanded Windsor-style contract (version 0.5.1)
 
 The bridge now exposes a broader, explicit contract rather than only the
 original five read-only tools:
@@ -57,9 +57,9 @@ conversation can retain. A fresh ChatGPT conversation was verified against the
 updated app and exposed all 31 tools; an older conversation may continue to
 show its original five-tool snapshot until it is refreshed or reopened.
 
-The same 0.5.0 package is also installed and enabled in the local Codex plugin
-marketplace as `open-data-bridge@open-data-bridge-local`; it points directly at
-the running loopback MCP server and therefore uses the full local tool surface.
+The last independently verified local Codex package was 0.5.0; the running
+loopback MCP service now serves the 0.5.1 source. A fresh ChatGPT session must
+be used when a client has cached an older tool list.
 
 ## Hard limits
 

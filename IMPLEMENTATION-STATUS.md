@@ -2,7 +2,7 @@
 
 Updated after the current verification run.
 
-## Expansion 0.5 (2026-10-23)
+## Expansion 0.5.1 (2026-10-23)
 
 The local bridge now includes a verified, approval-gated Meta publishing
 adapter. This is not a claim of an already connected account: the runtime
@@ -21,12 +21,15 @@ Implemented in code:
   fail-closed unknown-outcome handling.
 - HTTP and MCP surfaces for capabilities, account discovery, publish preview,
   approval and execution.
+- `configure_meta.py` for local hidden-input Meta app configuration with the App
+  Secret stored only in the Windows-user-bound DPAPI vault; the MCP capability
+  response reports safe configuration diagnostics.
 
 Verification for this expansion:
 
-- `python -m unittest -v`: 43 tests passed.
+- `python -m unittest -v`: 44 tests passed.
 - `python -m compileall -q .`: passed.
-- Live `/health` reports `0.5.0`; live MCP `tools/list` reports 31 tools.
+- Live `/health` reports `0.5.1`; live MCP `tools/list` reports 31 tools.
 - Live publish smoke passed through preview, explicit approval and dry-run;
   the dry-run made no provider request and returned HTTP 200.
 - Live account synchronization fails closed with
@@ -35,7 +38,8 @@ Verification for this expansion:
   validation, Instagram container/publish flow, Reels status polling,
   Facebook scheduling normalization and no-network behavior when disconnected.
 - No live Meta publish was attempted; no user-owned account is connected in
-  the bridge vault.
+  the bridge vault. The capability response reports the five missing
+  configuration inputs and `vault_app_configured=false`.
 
 ## Expansion 0.4 (2026-10-23)
 
@@ -106,7 +110,7 @@ Verification for this expansion:
 - The direct app URL is private to the connected ChatGPT workspace; it is not
   a public marketplace distribution link.
 - A local marketplace entry `open-data-bridge-local` was registered with Codex,
-  and `open-data-bridge@open-data-bridge-local` version `0.5.0` is installed
+  and `open-data-bridge@open-data-bridge-local` version `0.5.0` was installed
   and enabled in the local Codex configuration.
 
 ## Implemented and verified
@@ -132,9 +136,9 @@ Verification for this expansion:
 | Expanded catalog/query contract | `bridge_catalog.py`, 19-source catalog, blended `all`, filters, breakdowns, pagination and exports |
 | Expanded MCP surface | 25 tools exposed by live `tools/list` |
 | Action safety contract | redacted previews and blocked execution test; no write side effect |
-| Meta publish contract | 43-test synthetic Graph adapter coverage; live provider connection not present |
+| Meta publish contract | 44-test synthetic Graph adapter coverage; live provider connection not present |
 
-## Current 0.5 contract evidence
+## Current 0.5.1 contract evidence
 
 | Capability | Evidence |
 |---|---|
@@ -142,9 +146,10 @@ Verification for this expansion:
 | Expanded MCP surface | `tool_definitions()` exposes 31 local tools including guarded Meta publishing |
 | Nested filter semantics | `test_nested_filters_and_windsor_aliases` |
 | Fail-closed write boundary | destination tasks, custom fields, contact and `execute_action` return blocked/no-side-effect results |
-| Private app metadata | private description updated to the 0.5 publishing surface; local 0.5 package is prepared |
+| Private app metadata | private description updated to the guarded publishing surface; local 0.5.1 source is running |
 | Remote ChatGPT app schema | fresh chat exposed 31 tools and successfully called read-only `get_publish_capabilities`; older open chats may retain 5 tools |
-| Local Codex plugin | installed and enabled from `open-data-bridge-local`; MCP points at `http://127.0.0.1:8788/mcp` |
+| Local Codex plugin | last independently verified installation was 0.5.0; the loopback MCP endpoint now serves 0.5.1 |
+| Public source repository | `https://github.com/amjad2161/open-data-bridge`; the current 0.5.1 source update still requires publication verification |
 
 ## Deliberately not implemented yet
 
@@ -173,9 +178,9 @@ endpoints or code.
 
 ## Acceptance gates for the next phase
 
-1. Complete Meta App Secret re-authentication in Meta Developer settings, then
-   inject it only through a protected local process environment; it must never
-   enter source control, chat, logs or MCP responses.
+1. Run `python .\configure_meta.py` locally after obtaining the App Secret in
+   Meta's own console. It must never enter source control, chat, logs or MCP
+   responses.
 2. Complete OAuth with the exact publishing scopes, run `sync_meta_accounts`,
    and verify the returned Page/Instagram capability records without exposing
    tokens.

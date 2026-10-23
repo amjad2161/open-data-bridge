@@ -31,7 +31,7 @@ from oauth import OAuthStateStore
 
 META_STATE = OAuthStateStore()
 MAX_REQUEST_BYTES = 1_048_576
-SERVER_VERSION = "0.5.0"
+SERVER_VERSION = "0.5.1"
 ACTION_PREVIEWS: dict[str, dict[str, Any]] = {}
 PUBLISH_PREVIEWS: dict[str, dict[str, Any]] = {}
 PUBLISH_PREVIEW_TTL_SECONDS = 600
@@ -303,6 +303,7 @@ def publish_client() -> MetaPublishClient:
 def _publish_capabilities() -> dict[str, Any]:
     result = publish_client().capabilities()
     result["connection"] = meta_client().status()
+    result["configuration"] = meta_client().configuration_status()
     return result
 
 

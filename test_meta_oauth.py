@@ -1,6 +1,7 @@
 import json
 import unittest
 from urllib.parse import parse_qs, urlparse
+from unittest.mock import patch
 
 from meta_oauth import MetaOAuthClient, MetaOAuthConfig, MetaOAuthError
 from oauth import OAuthStateStore
@@ -91,6 +92,38 @@ class MetaOAuthTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(MetaOAuthError, "not_configured"):
             client.start()
+
+    def test_configuration_can_load_app_secret_from_encrypted_vault_config(self):
+        self.vault.set(
+            "meta.app_config",
+            json.dumps(
+                {
+                    "app_id": "123456",
+                    "app_secret": "vault-only-secret",
+                    "api_version": "v99.0",
+                    "redirect_uri": "https://bridge.example/oauth/meta/callback",
+                    "scopes": ["instagram_basic"],
+                    "use_pkce": True,
+                }
+            ),
+        )
+        with patch.dict(
+            "os.environ",
+            {
+                "META_APP_ID": "",
+                "META_APP_SECRET": "",
+                "META_API_VERSION": "",
+                "META_REDIRECT_URI": "",
+                "META_OAUTH_SCOPES": "",
+                "META_USE_PKCE": "",
+            },
+            clear=False,
+        ):
+            client = MetaOAuthClient(state_store=OAuthStateStore(), vault=self.vault, opener=self.client._opener)
+        self.assertTrue(client.configuration_status()["configured"])
+        self.assertNotIn("app_secret", client.configuration_status())
+        _item, url = client.start()
+        self.assertNotIn("vault-only-secret", url)
 
     def test_invalid_public_redirect_is_rejected(self):
         client = MetaOAuthClient(

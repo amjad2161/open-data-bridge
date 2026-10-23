@@ -4,7 +4,7 @@ Review mode: defect-first inspection of the complete current working tree,
 including the original local MCP implementation, Meta OAuth additions, vault
 persistence changes, tests and setup documentation.
 
-## Expansion review — 0.5.0
+## Expansion review — 0.5.1
 
 - `meta_publish.py` is limited to Graph API paths verified against Meta's
   current documentation: Facebook Page text/link/photo posts and Instagram
@@ -35,7 +35,7 @@ persistence changes, tests and setup documentation.
   are covered by tests.
 - Provider writes, destination scheduling, provider custom-field persistence,
   billing and outbound support messages remain fail-closed.
-- The local service has 43 passing tests. A fresh ChatGPT conversation was also
+- The local service has 44 passing tests. A fresh ChatGPT conversation was also
   verified against the updated app and exposed 31 tools; an already-open chat
   may retain the old five-tool snapshot until it is refreshed or reopened.
 
@@ -63,16 +63,18 @@ persistence changes, tests and setup documentation.
 
 ## Current operational review
 
-- Local implementation: 43 automated tests pass; compilation and whitespace
+- Local implementation: 44 automated tests pass; compilation and whitespace
   checks pass; no credential literal was found in the source tree.
 - Private ChatGPT integration: verified through the official tunnel-client
   runtime and a real `get_connectors` call from ChatGPT; 7 dispatcher requests
   completed with 0 failures.
-- Local Codex integration: plugin version `0.5.0` is installed and enabled from
-  the local marketplace and points at the loopback MCP endpoint.
-- Meta setup: an existing development app and the loopback redirect are
-  present, but Meta requires password re-authentication before exposing the App
-  Secret. No password was collected and no bypass was attempted.
+- Local Codex integration: the 0.5.0 package installation was previously
+  verified; the running loopback MCP endpoint now serves the 0.5.1 source.
+- Meta setup: an existing development app is available and its required test
+  permissions are ready, but read-only URI validation showed that the loopback
+  callback is not registered. Meta also requires password re-authentication
+  before exposing the App Secret. No password was collected and no bypass was
+  attempted.
 
 ## Findings fixed
 
@@ -102,9 +104,10 @@ also passes.
 These are not claims of completion and require external state or provider
 authorization:
 
-- Meta App ID and loopback redirect registration exist in the existing
-  development app, but the App Secret has not been supplied to the local
-  process because Meta requires a password re-authentication step. No live
+- The existing development app and required test permissions are present, but
+  the loopback redirect is not registered and the App Secret has not been
+  supplied to the local process because Meta requires a password
+  re-authentication step. No live
   Meta OAuth or real-account connection is therefore claimed.
 - No live Meta OAuth, account discovery, Graph API, Marketing API or ad-account
   read test has run.
@@ -118,5 +121,7 @@ authorization:
   verification/scope enforcement on every request are still missing.
 - ChatGPT requires a remote HTTPS MCP endpoint or supported tunnel; the local
   `127.0.0.1` endpoint is not a direct ChatGPT connection target.
-- No GitHub remote, commit identity or deployment target is configured.
+- Public source repository: `https://github.com/amjad2161/open-data-bridge`.
+  The 0.5.1 source update must be published and independently checked after
+  the local commit.
 
